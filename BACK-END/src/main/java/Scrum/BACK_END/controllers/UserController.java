@@ -20,8 +20,8 @@ public class UserController {
     private UserService services;
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody UserDTO user) throws Exception {
-        System.out.println("Novo usuário cadastrado!");
+    public ResponseEntity<Object> createUser(@RequestBody UserDTO user) throws Exception {
+        System.out.println("Tentativa de cadastro");
         return services.createUser(user);
     }
     @GetMapping
