@@ -2,12 +2,14 @@ package Scrum.BACK_END.service;
 
 
 import Scrum.BACK_END.DTOS.UserDTO;
+import Scrum.BACK_END.ExceptionHandler.EmailAlreadyUsedException;
+import Scrum.BACK_END.ExceptionHandler.PhoneAlreadyUsedException;
 import Scrum.BACK_END.entities.User;
+import Scrum.BACK_END.ExceptionHandler.ErrorResponse;
 import Scrum.BACK_END.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -16,13 +18,15 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
-    public ResponseEntity<User> createUser(@RequestBody UserDTO user) throws Exception {
+    public ResponseEntity<Object> createUser(UserDTO user) throws Exception {
         try {
             User auxUser = new User(user);
+            CheckEmail(auxUser);
+            CheckPhone(auxUser);
             repository.save(auxUser);
             return ResponseEntity.ok(auxUser);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+        } catch (EmailAlreadyUsedException | PhoneAlreadyUsedException e) {
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }
     }
 
@@ -33,5 +37,17 @@ public class UserService {
        } catch (Exception e) {
            return ResponseEntity.badRequest().build();
        }
+    }
+
+    public void CheckEmail(User request) {
+        if(repository.existsByEmail(request.getEmail())) {
+            throw new EmailAlreadyUsedException("O email já está em uso!");
+        }
+    }
+
+    public void CheckPhone(User request) {
+        if(repository.existsByPhoneNumber(request.getPhoneNumber())) {
+            throw new PhoneAlreadyUsedException("O Phone já está em uso!");
+        }
     }
 }
