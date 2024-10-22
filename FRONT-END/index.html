@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTEMA</title>
+    <!-- Importa o arquivo CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form id="cadastroUsuario">
+        <h1>Cadastro de Usuário</h1>
+        <label>Nome:</label>
+        <input type="text" name="nome-user" id="nome-user" placeholder="Insira o nome...">
+        <label>Email:</label>
+        <input type="email" name="email-user" id="email-user" placeholder="Insira o email...">
+        <label>Número:</label>
+        <input type="text" name="number-user" id="number-user" placeholder="Insira fone para contato...">
+        <button type="submit-data">Cadastrar</button>
+    </form>
+    
+
+    <h2>Lista de Usuários</h2>
+    <button id="carregarDados">Carregar Usuários</button>
+    <table id="tabelaUsuarios">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NOME</th>
+                <th>EMAIL</th>
+                <th>PHONE</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+    <script src="script.js"></script>
+</body>
+</html>
