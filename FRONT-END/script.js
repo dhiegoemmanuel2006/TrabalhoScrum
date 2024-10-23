@@ -1,42 +1,49 @@
-document.getElementById('cadastroUsuario').addEventListener('submit', function(event) {
+document.getElementById('cadastroUsuario').addEventListener('submit', handleSubmit);
+
+//Ações feitas após clicar
+function handleSubmit(event) {
     event.preventDefault();
+    const dados = captureFormData();
+    sendData(dados);
+}
 
-    // Captura os dados do formulário
-    const nome = document.getElementById('nome-user').value;
-    const email = document.getElementById('email-user').value;
-    const phoneNumber = document.getElementById('number-user').value;
-
-    // Cria o objeto a ser enviado
-    const dados = {
-        name: nome,
-        email: email,
-        phoneNumber: phoneNumber
+//Captura dos dados do formulário para depois eniar
+function captureFormData() {
+    return {
+        name: document.getElementById('nome-user').value,
+        email: document.getElementById('email-user').value,
+        phoneNumber: document.getElementById('number-user').value
     };
+}
 
-    // Envia os dados para a API usando fetch (POST)
+//Local onde envia os dados e captura dos possíveis erros
+function sendData(dados) {
     fetch('http://localhost:8080/user', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dados)
     })
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Erro ao cadastrar usuário');
-        }
-    })
-    .then(data => {
-        alert('Usuário cadastrado com sucesso!');
-        console.log(data);
-    })
-    .catch(error => {
-        console.error('Erro:', error);
-        alert('Ocorreu um erro ao cadastrar o usuário.');
-    });
-});
+        .then(handleResponse)
+        .then(data => {
+            alert('Usuário cadastrado com sucesso!');
+            console.log(data);
+        })
+        .catch(handleError);
+}
+
+function handleResponse(response) {
+    if (!response.ok) {
+        return response.json().then(error => {
+            throw new Error(error.message);
+        });
+    }
+    return response.json();
+}
+
+function handleError(error) {
+    console.error('Erro:', error);
+    alert('Ocorreu um erro ao cadastrar o usuário: ' + error);
+}
 
 
 document.getElementById('carregarDados').addEventListener('click', function() {
@@ -72,6 +79,6 @@ document.getElementById('carregarDados').addEventListener('click', function() {
     })
     .catch(error => {
         console.error('Erro ao carregar usuários:', error);
-        alert('Erro ao carregar usuários.');
+        alert(error);
     });
 });
