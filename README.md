@@ -4,7 +4,7 @@
 * Alváro felix - Product Owner
 * Jennifer - Scrum master
 * Dhiego Emmanuel - Back-end
-* Lucas Santos - Back end
+* Lucas Felipe - Back end
 * Gabriel Coelho - FullStack
 * João Pedro - Front-end
 * Marcelo - Front-end
